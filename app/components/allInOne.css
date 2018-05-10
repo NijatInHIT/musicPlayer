@@ -1,0 +1,138 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	width: 100vw;
+	height: 100vh;
+	background: #854B5B 0 0/100% 100%;
+	background-image: url('../../static/images/back1.png');
+	overflow: hidden;
+}
+
+
+.cpt-header{
+	height: 20px;
+	background-color: #152d2e;
+	border: 1px solid #152d2a;
+}
+
+.header-title{
+	color: #b6e2d3;
+	text-align: center;
+}
+.cpt-pgs{
+	height: 21px;
+	width: 95%;
+	margin: 5px auto;
+	background: #999DA0;
+	cursor: pointer;
+	border-radius: 25px;
+}
+
+.pgs-time{
+	height: 21px;
+	width: 0%;
+	background: #152d2e;
+	border-radius: 25px;
+	color: #999da0;
+	transition: width 0.1s linear;
+}
+
+
+.btn {
+	height: 50px;
+	cursor: pointer;
+	margin: 10px auto;
+	display: inline-block;
+	outline: none;
+	border: none;
+	border-radius: 7px;
+	font-size: 28px;
+	color: #999da0;
+	background: #152d2e;
+	padding: 5px 15px;
+	margin: 2px 7px;
+	opacity: 0.5;
+}
+
+.holeP{
+	width: 1200px;
+	border: 1px solid black;
+}
+
+.playerDiv{
+	z-index: 1;
+	position: relative;
+	width: 50%;
+	margin: 0 auto;
+
+}
+
+.pCover{
+	border-radius: 7px;
+	position: relative;
+	height: 600px;
+	border: 1px solid black;
+	background:black 0 0/100% 100%;
+	box-shadow: 2px -6px 27px 10px #052d13;
+}
+
+.allBtn{
+	position: absolute;
+	bottom: 10px; left: 10px;
+}
+.pList{
+	overflow: overlay;
+	width: 500px;
+	border-radius: 7px;
+	z-index: -2;
+	height: 550px; 
+	margin-top: 50px;
+	position: absolute;
+	top: 0;left: 0;
+	opacity: 0.9;
+
+	transition: left 0.3s ease-out;
+
+}
+
+.slideShow{
+	left: -150px;
+}
+
+.pList li{
+	margin: 5px 5px;
+	height: 50px;
+	transition: all 0.4s linear;
+	position: relative;
+	left: 50px;
+
+}
+
+.pList ul{
+	width: 300px;
+}
+
+.pList li:hover{
+	background: #0152;
+	cursor: pointer;
+	height: 100px;
+	margin-left: -30px;
+
+}
+
+.pList img:hover{
+	height: 120px;
+	width: 120px;
+}
+
+.blurAlbum{
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	border-radius: 7px;
+	transition: all 0.1s linear;
+}
+
