@@ -14,6 +14,7 @@ class Player extends Component {
 		this.btnPause = this.btnPause.bind(this);
 		this.nowPlayingChanged = this.nowPlayingChanged.bind(this);
 		this.nextSong = this.nextSong.bind(this);
+		this.playMp3 = this.playMp3.bind(this);
 		this.state = {
 			progress: 0,
 			volume: 0,
@@ -34,28 +35,47 @@ class Player extends Component {
 		});
 	}
 
+	playMp3(toPlay) {
+		new Promise((resolve, reject) => {
+			console.log(' GETTING MP3 ADDRESS of ----> ', toPlay.name, ' ----> ', 'DatabaseId : ', toPlay.id);
+			$.ajax({
+				type: 'get',
+				url: 'http://127.0.0.1:3001',
+				data: {
+					mp3: toPlay.id
+				},
+				dataType: 'text',
+				success: function(data) {
+					data = JSON.parse(data);
+					$('#player').jPlayer('setMedia', {
+						mp3: data.data[0].url
+					}).jPlayer('play');
+					resolve();
+				}
+			});
+		}).then(() => {
+			this.setState({
+				nowPlaying: playList[nowId % 113]
+			});
+		})
+
+	}
+
 	nowPlayingChanged(nowPlaying) {
 		playList = nowPlaying;
 		nowPlaying = nowPlaying[nowId % 113];
-		console.log('over ! ');
 		$('#player').jPlayer({
-			ready: function() {
-				$(this).jPlayer('setMedia', {
-					mp3: nowPlaying.mp3
-				}).jPlayer('play');
-			},
 			supplied: 'mp3',
 			wmode: 'window',
 			volume: 0.5,
 			loop: true
 		});
+		this.playMp3(nowPlaying);
 		$('.pCover').addClass('coverChange');
 		setTimeout(() => {
 			$('.pCover').removeClass('coverChange');
 		}, 250);
-		this.setState({
-			nowPlaying: nowPlaying
-		});
+		$('.header-title')[0].innerHTML = '#' + playList[nowId % 113].name;
 	}
 
 	nextSong(changedId) {
@@ -67,14 +87,8 @@ class Player extends Component {
 			nowId = nowId - 0 - 1;
 			nowId = nowId < 0 ? 113 + nowId : nowId;
 		}
-		$('#player').jPlayer('setMedia', {
-			mp3: playList[nowId % 113].mp3
-		}).jPlayer('play');
+		this.playMp3(playList[nowId % 113]);
 		$('.header-title')[0].innerHTML = '#' + playList[nowId % 113].name;
-
-		this.setState({
-			nowPlaying: playList[nowId % 113]
-		});
 	}
 
 	progressChanged(newPgs) {
@@ -106,10 +120,13 @@ class Player extends Component {
 		$('.pList').toggleClass('slideShow');
 	}
 
+
+
 	render() {
 		return (
 			<div id='holeP'>
 				<div className='playerDiv'>
+					<div className='albumPreset'></div>
 					<div className='pCover' style={{backgroundImage: `url(${this.state.nowPlaying.albumUrl})`}}>
 						<div className='allBtn'>
 							<button className='btn'><i className="fa  fa-arrow-circle-left" onClick={this.nextSong}></i></button>
