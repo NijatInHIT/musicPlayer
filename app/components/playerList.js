@@ -5,7 +5,7 @@ import React, {
 let rockList = [];
 let defaultList = [];
 let musicList = [];
-
+let timeout = null;
 let promise;
 
 
@@ -15,14 +15,19 @@ class PlayerList extends Component {
 		super(props);
 		this.getList = this.getList.bind(this);
 		this.chooseListMusic = this.chooseListMusic.bind(this);
+		this.mouseInList = this.mouseInList.bind(this);
 
 		this.state = {
-			listReady: false
+			listReady: false,
+			mouseInImgId: 0
 		};
 	}
 
 	leaveList() {
-		//$('.pList').removeClass('slideShow');
+		clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			$('.pList').removeClass('slideShow');
+		}, 3000);
 		$('.albumPreset').css({
 			display: 'none'
 		});
@@ -67,11 +72,19 @@ class PlayerList extends Component {
 	}
 
 	mouseInList(e) {
+		clearTimeout(timeout);
 		$('.albumPreset').css({
 			display: 'block',
 			top: e.pageY - 100
 		});
+		if (e.target.nodeName === 'IMG' && e.target.dataset.index != this.state.mouseInImgId) {
+			this.setState({
+				mouseInImgId: e.target.dataset.index
+			});
+
+		}
 	}
+
 
 
 	render() {
@@ -87,7 +100,16 @@ class PlayerList extends Component {
 			}
 			retTag = `<ul style='list-style:none'>${retTag}</ul>`;
 			return (
-				<div className='pList'  onMouseMove={this.mouseInList} onMouseLeave={this.leaveList} onClick={this.chooseListMusic} dangerouslySetInnerHTML={{__html:retTag}}>
+				<div>
+				<div className='albumPreset'>
+					<p>{musicList[this.state.mouseInImgId].name}</p>
+					<hr/>
+					<p>{musicList[this.state.mouseInImgId].album}</p>
+					<hr/>
+					<p>---{musicList[this.state.mouseInImgId].artist}</p>
+				</div>
+				<div className='pList' onMouseMove={this.mouseInList} onMouseLeave={this.leaveList} onClick={this.chooseListMusic} dangerouslySetInnerHTML={{__html:retTag}}>
+				</div>
 				</div>
 			);
 		}

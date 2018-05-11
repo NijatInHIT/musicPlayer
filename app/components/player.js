@@ -126,7 +126,6 @@ class Player extends Component {
 		return (
 			<div id='holeP'>
 				<div className='playerDiv'>
-					<div className='albumPreset'></div>
 					<div className='pCover' style={{backgroundImage: `url(${this.state.nowPlaying.albumUrl})`}}>
 						<div className='allBtn'>
 							<button className='btn'><i className="fa  fa-arrow-circle-left" onClick={this.nextSong}></i></button>
