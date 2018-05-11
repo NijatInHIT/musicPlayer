@@ -49,6 +49,10 @@ class Player extends Component {
 			volume: 0.5,
 			loop: true
 		});
+		$('.pCover').addClass('coverChange');
+		setTimeout(() => {
+			$('.pCover').removeClass('coverChange');
+		}, 250);
 		this.setState({
 			nowPlaying: nowPlaying
 		});
@@ -57,8 +61,11 @@ class Player extends Component {
 	nextSong(changedId) {
 		if (typeof changedId !== 'object') {
 			nowId = changedId;
-		} else {
-			nowId = nowId + 1;
+		} else if ($(changedId.target).hasClass('fa-arrow-circle-right')) {
+			nowId = nowId - 0 + 1;
+		} else if ($(changedId.target).hasClass('fa-arrow-circle-left')) {
+			nowId = nowId - 0 - 1;
+			nowId = nowId < 0 ? 113 + nowId : nowId;
 		}
 		$('#player').jPlayer('setMedia', {
 			mp3: playList[nowId % 113].mp3
@@ -105,7 +112,7 @@ class Player extends Component {
 				<div className='playerDiv'>
 					<div className='pCover' style={{backgroundImage: `url(${this.state.nowPlaying.albumUrl})`}}>
 						<div className='allBtn'>
-							<button className='btn'><i className="fa  fa-arrow-circle-left"></i></button>
+							<button className='btn'><i className="fa  fa-arrow-circle-left" onClick={this.nextSong}></i></button>
 							<button className="btn btn-pause" onClick={this.btnPause}><i className="fai fa  fa-pause-circle"></i> </button>
 							<button className='btn'><i className="fa  fa-arrow-circle-right" onClick={this.nextSong}></i></button>
 							<button className='btn'><i className="fa  fa-list" onClick={this.toggleList}></i></button>
