@@ -8,17 +8,28 @@ import SearchMusic from './components/searchMusic.js';
 
 
 class Root extends Component {
+	constructor(props) {
+		super(props);
+		this.changeMusicFromSearch = this.changeMusicFromSearch.bind(this);
+	}
+
 	componentWillUnmount() {
 		$('#player').unbind($.jPlayer.event.timeupdate);
 	}
+
+	changeMusicFromSearch(id) {
+		this.refs.playMusic.playMp3(id);
+
+	}
+
 
 	render() {
 		return (
 			<div>
 				<Header />
 				<hr/><br/>
-				<SearchMusic />
-				<Player />
+				<SearchMusic  tpId={this.changeMusicFromSearch}/>
+				<Player ref='playMusic'/>
 			</div>
 		);
 	}

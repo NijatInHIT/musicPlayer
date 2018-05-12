@@ -11,14 +11,14 @@ class Progress extends Component {
 
 
 	changeProgress(e) {
-		const newPgs = ((e.pageX - 400) / e.currentTarget.offsetWidth);
+		const newPgs = ((e.pageX - 750) / e.currentTarget.offsetWidth);
 		this.props.pgsChanged(newPgs);
 	}
 
 	render() {
 		return (
 			<div className='cpt-pgs' onClick={this.changeProgress}>
-				<div className='pgs-time'>{`---------${this.props.progress}%-----------`}</div>
+				<div className='pgs-time'>{`----${this.props.progress}%----`}</div>
 			</div>);
 	}
 }

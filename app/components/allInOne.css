@@ -158,6 +158,9 @@ body{
 	font-size: 26px;
 	margin: 5px;
 }
+.albumPreset p:nth-child(1){
+	font-weight: 900;
+}
 .albumPreset p:nth-child(3){
 	font-size: 18px;
 }
@@ -175,49 +178,146 @@ body{
 	transition: all 0.3s linear;
 }
 
+hr{
+	background: rgb(12, 45, 72);
+    border: none;
+    height: 2px;
+}
+
 
 .searchDiv{
+	position: relative;
+	margin-top: -40px;
 	float: left;
-	width: 50px;
-	height: 50px;
-	border: 1px solid red;
+	width: 35px;
+	height: 30px;
+	border:2px solid #b6e2d3;
 	border-radius: 50%;
 	margin-left: 50px;
-	transition: all 0.3s linear;
+	transition: all 0.2s linear;
 	cursor: pointer;
 }
 
 #search{
+	position: absolute;
 	text-align: center;
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	outline: none;
 	border: none;
-	position: relative;
-	bottom: 50px;
+	bottom: 0px;
 }
-.searchDiv::focus{
-	width: 300px;
-	height: 60px;
+.searchOpen #search{
+	background: transparent;
+	border-radius: 7px;
+	border: none;
+	font-size: 28px;
+	width: 270px;
 }
 
+
 .searchDiv::before{
-	content: 'ss';
+	content: ' ';
 	z-index: 1;
-    content: '';
     width: 100%;
     height: 100%;
     display: block;
-    position: relative;
-    transition: all 0.3s linear;
+    position: absolute;
+    background: #152d2e;
+    border-radius: 50%;
 }
-.searchDiv:click::before{
+.searchOpen::before{
+	filter: none;
+	border-radius: 7px;
 	visibility: hidden;
+    border: 2px solid #b6e2d3;
+    height: 20px;
+    width: 0;
+    top: -20px;
+    left: 270px;
+    transition: all 0.2s linear;
+    transform: rotate(45deg) translate(0,0) scaleY(0);
+}
+.getCross::before{
+	visibility: visible;
+	transform: rotate(45deg) translate(0,33px) scaleY(0.9);
 }
 
-hr{
-	background: rgb(12, 45, 72);
-    border: none;
-    height: 2px;
+.searchDiv::after{
+	transition: all 0.2s linear;
+	content: ' ';
+    display: block;
+    position: absolute;
+    border: 2px solid #b6e2d3;
+    border-radius: 26%;
+    height: 20px;
+    bottom: -14px;
+    left: 102%;
+    transform:rotate(-45deg) translate(0px,0px) scale(1);
+}
+.searchOpen::after{
+	left: 270px;
+	transform:rotate(-45deg) translate(0px,-10px) scaleY(0);
+}
+.getCross::after{
+	transform:rotate(-45deg) translate(-4px,-28px) scaleY(0.9);
+}
+.searchOpen{
+	width: 270px;
+	border-radius: 7px;
+}
+
+
+.getCross{
+	display: block;
+	border: 1px solid #b6e2d3;
+}
+.clickCross{
+	z-index: 1;
+	cursor: pointer;
+	width: 30px;
+    height: 33px;
+    position: absolute;
+    right: 4px;
+    top: 1px;
+    background: transparent;
+}
+
+.searchSuggest{
+	min-height: 50px;
+	transition: all 0.3s linear 0.2s;
+	position: absolute;
+	left: -400px;
+	width: 400px;
+	border-radius: 15px;
+}
+
+.searchSuggest::before{
+	position: absolute;
+	z-index: -1;
+	filter: blur(7px);
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: red url('../../static/images/back1.png')  fixed 0 0/100% 100%;
+}
+.searchSuggest p{
+	font-size: 24px;
+	margin: 4px;
+}
+.searchSuggestShow{
+	left: 65px;
+}
+.searchSuggestShow p{
+	cursor: pointer;
+	background: transparent;
+}
+
+.searchSuggestShow p:hover{
+	background:#208CC2
+}
+.searchSuggestShow span{
+	display: block;
 }

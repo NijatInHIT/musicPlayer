@@ -33,29 +33,61 @@ class Player extends Component {
 				'width': e.jPlayer.status.currentPercentAbsolute + '%'
 			});
 		});
+		$('#player').bind($.jPlayer.event.ended, e => {
+			this.playMp3(playList[++nowId % playList.length]);
+		});
 	}
 
 	playMp3(toPlay) {
-		new Promise((resolve, reject) => {
-			console.log(' GETTING MP3 ADDRESS of ----> ', toPlay.name, ' ----> ', 'DatabaseId : ', toPlay.id);
-			$.ajax({
-				type: 'get',
-				url: 'http://127.0.0.1:3001',
-				data: {
-					mp3: toPlay.id
-				},
-				dataType: 'text',
-				success: function(data) {
-					data = JSON.parse(data);
-					$('#player').jPlayer('setMedia', {
-						mp3: data.data[0].url
-					}).jPlayer('play');
-					resolve();
-				}
+		let promise = Promise.resolve();
+		if (typeof toPlay !== 'object') {
+			promise = promise.then(() => {
+				return new Promise((resolve, reject) => {
+					$.ajax({
+						type: 'get',
+						url: 'http://127.0.0.1:3001',
+						data: {
+							detail: toPlay
+						},
+						success: function(data) {
+							data = JSON.parse(data);
+							playList.unshift({
+								id: data.songs[0].id,
+								name: data.songs[0].name,
+								artist: data.songs[0].artists[0].name,
+								album: data.songs[0].album.name,
+								albumUrl: data.songs[0].album.picUrl
+							});
+							toPlay = playList[0];
+							resolve();
+						}
+					});
+				});
+			})
+		}
+		promise.then(() => {
+			return new Promise((resolve, reject) => {
+				console.log(' GETTING MP3 ADDRESS of ----> ', toPlay.name, ' ----> ', 'DatabaseId : ', toPlay.id);
+				$.ajax({
+					type: 'get',
+					url: 'http://127.0.0.1:3001',
+					data: {
+						mp3: toPlay.id
+					},
+					dataType: 'text',
+					success: function(data) {
+						data = JSON.parse(data);
+						$('#player').jPlayer('setMedia', {
+							mp3: data.data[0].url
+						}).jPlayer('play');
+						$('.header-title')[0].innerHTML = '#' + playList[nowId % playList.length].name;
+						resolve();
+					}
+				});
 			});
 		}).then(() => {
 			this.setState({
-				nowPlaying: playList[nowId % 113]
+				nowPlaying: playList[nowId % playList.length]
 			});
 		})
 
@@ -63,7 +95,7 @@ class Player extends Component {
 
 	nowPlayingChanged(nowPlaying) {
 		playList = nowPlaying;
-		nowPlaying = nowPlaying[nowId % 113];
+		nowPlaying = nowPlaying[nowId % playList.length];
 		$('#player').jPlayer({
 			supplied: 'mp3',
 			wmode: 'window',
@@ -75,7 +107,6 @@ class Player extends Component {
 		setTimeout(() => {
 			$('.pCover').removeClass('coverChange');
 		}, 250);
-		$('.header-title')[0].innerHTML = '#' + playList[nowId % 113].name;
 	}
 
 	nextSong(changedId) {
@@ -85,10 +116,9 @@ class Player extends Component {
 			nowId = nowId - 0 + 1;
 		} else if ($(changedId.target).hasClass('fa-arrow-circle-left')) {
 			nowId = nowId - 0 - 1;
-			nowId = nowId < 0 ? 113 + nowId : nowId;
+			nowId = nowId < 0 ? playList.length + nowId : nowId;
 		}
-		this.playMp3(playList[nowId % 113]);
-		$('.header-title')[0].innerHTML = '#' + playList[nowId % 113].name;
+		this.playMp3(playList[nowId % playList.length]);
 	}
 
 	progressChanged(newPgs) {
