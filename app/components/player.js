@@ -59,6 +59,7 @@ class Player extends Component {
 								albumUrl: data.songs[0].album.picUrl
 							});
 							toPlay = playList[0];
+							nowId = 0;
 							resolve();
 						}
 					});
