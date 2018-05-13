@@ -1,7 +1,2 @@
-let p1 = {
-	name: 'nijat'
-};
-let a1 = function() {
-	console.log(this.name);
-}.bind(p1);
-a1();
+str = '/?typeDetail=10&searchValue=nija';
+console.log((str.slice(2)).split(/[=&]/g));

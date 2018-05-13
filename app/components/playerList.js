@@ -110,9 +110,8 @@ class PlayerList extends Component {
 					<hr/>
 					<p>---{musicList[this.state.mouseInImgId].artist}</p>
 				</div>
-				<div className='pList' onMouseMove={this.mouseInList} onMouseLeave={this.leaveList} onClick={this.chooseListMusic} dangerouslySetInnerHTML={{__html:retTag}}>
-				</div>
-				</div>
+				<div className='pList' onMouseMove={this.mouseInList} onMouseLeave={this.leaveList} onClick={this.chooseListMusic} dangerouslySetInnerHTML={{__html:retTag}}></div>
+ 				</div>
 			);
 		}
 	}

@@ -11,7 +11,7 @@ class Progress extends Component {
 
 
 	changeProgress(e) {
-		const newPgs = ((e.pageX - 750) / e.currentTarget.offsetWidth);
+		const newPgs = ((e.pageX - 780) / e.currentTarget.offsetWidth);
 		this.props.pgsChanged(newPgs);
 	}
 

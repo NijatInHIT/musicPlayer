@@ -5,6 +5,8 @@
 }
 
 body{
+	position: relative;
+	z-index: -10;
 	width: 100vw;
 	height: 100vh;
 	background: #854B5B 0 0/100% 100%;
@@ -21,7 +23,8 @@ body{
 
 .header-title{
 	color: #b6e2d3;
-	text-align: center;
+	text-align: right;
+	padding: 0 18%;
 }
 .cpt-pgs{
 	height: 21px;
@@ -307,6 +310,7 @@ hr{
 .searchSuggest p{
 	font-size: 24px;
 	margin: 4px;
+	transition: all 0.15s linear;
 }
 .searchSuggestShow{
 	left: 65px;
@@ -321,4 +325,75 @@ hr{
 }
 .searchSuggestShow span{
 	display: block;
+}
+
+
+.searchDetail{
+	transform: translateY(8px);
+	z-index: -3;
+    width: 700px;
+    height: 1px;
+    position: absolute;
+    bottom: 0px;
+    left: 45px;
+    transition: all 0.5s linear;
+}
+
+.searchDetail::before{
+	position: absolute;
+	z-index: -1;
+	filter: blur(7px);
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: red url('../../static/images/back1.png')  fixed 0 0/100% 100%;
+}
+
+.searchDetail-show{
+	height: 700px;
+}
+
+.detailTab{
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	border-radius: 7% 7% 0 0/4% 4% 0 0;
+	height: 35px;
+}
+
+.detailTab li{
+	padding: 2px 0 4px 0;
+	font-size: 20px;
+	font-style: 30px;
+	text-align: center;
+	background: #eee;
+	width: 114px;
+	border: 1px solid darkred;
+	margin: 5px 0px;
+	float: left;
+	list-style: none;
+	cursor: pointer;
+	transition: all 0.2s ease-in;
+}
+
+.liChoosen{
+	background: transparent !important;
+	border: 1px solid transparent !important;
+}
+
+.detailSolo{
+	position: absolute;
+	top: 50px;
+	width: 100%;
+	min-height: 50px;
+}
+
+.detailSolo p{
+	cursor: pointer;
+	font-size: 24px;
+	margin: 8px;
+}
+.detailSolo p:hover{
+	border:1px dotted #208CC2;
 }

@@ -2,6 +2,7 @@ import React, {
 	Component
 } from 'react';
 
+
 let promise = Promise.resolve();
 let searchValue = null;
 class SearchMusic extends Component {
@@ -10,11 +11,54 @@ class SearchMusic extends Component {
 		this.changeInput = this.changeInput.bind(this);
 		this.clickSearch = this.clickSearch.bind(this);
 		this.clickSearchedValue = this.clickSearchedValue.bind(this);
+		this.enterDown = this.enterDown.bind(this);
+		this.clickTab = this.clickTab.bind(this);
 		this.state = {
-			searchValue: undefined
+			searchValue: undefined,
+			soloDetail: undefined
 		};
 
 	}
+
+	enterDown(e) {
+		if (e.keyCode == 13) {
+			$('.searchDetail').addClass('searchDetail-show');
+			searchValue = e.target.value;
+			let e1 = {};
+			e1.target = {};
+			e1.target.keyCode = 13;
+			this.removeSearch(e1);
+		}
+	}
+
+	clickTab(e) {
+		if (e.target.nodeName == 'LI') {
+			$('.detailTab li').removeClass('liChoosen');
+			$(e.target).addClass('liChoosen');
+		}
+		new Promise((resolve, reject) => {
+			$.ajax({
+				type: 'GET',
+				dataType: 'text',
+				url: 'http://127.0.0.1:3001',
+				data: {
+					typeDetail: e.target.innerHTML,
+					searchValue: searchValue
+				},
+				success: function(data) {
+					data = JSON.parse(data);
+					resolve(data);
+
+				}
+			});
+		}).then(data => {
+			this.setState({
+				soloDetail: data
+			});
+		});
+
+	}
+
 	clickSearch(e) {
 		if ($(e.target).hasClass('searchDiv') && !$(e.target).hasClass('getCross')) {
 			$('.searchSuggest').addClass('searchSuggestShow');
@@ -25,28 +69,39 @@ class SearchMusic extends Component {
 				$('.searchDiv').addClass('getCross');
 			}, 200);
 			$('.searchDiv').append('<span class="clickCross"></span>');
-			$('.clickCross').on('click', ((e) => {
-				$('.searchDiv').removeClass('getCross');
-				setTimeout(() => {
-					$('.searchDiv').removeClass('searchOpen');
-					$('.searchSuggest').removeClass('searchSuggestShow');
-					$('.clickCross').remove();
-					this.setState({
-						searchValue: undefined
-					});
-				}, 200);
-
-			}).bind(this));
+			$('.clickCross').on('click', this.removeSearch.bind(this));
 		}
 	}
+
+	removeSearch(e) {
+		$('.searchDiv').removeClass('getCross');
+		setTimeout(() => {
+			$('.searchDiv').removeClass('searchOpen');
+			$('.searchSuggest').removeClass('searchSuggestShow');
+			!(e && e.target.keyCode == 13) ? $('.searchDetail-show').removeClass('searchDetail-show'): null;
+			$('.clickCross').remove();
+			this.setState({
+				searchValue: undefined,
+				soloDetail: undefined
+			});
+		}, 200);
+	}
+
 
 	clickSearchedValue(e) {
 		if (e.target.nodeName === 'P') {
 			console.log(e.target);
 			let ret = [];
-			ret[0] = e.target.parentNode.childNodes[0].wholeText.match(/[a-z]+/g)[0];
+
+			if (e.target.parentNode.nodeName === 'SPAN') {
+				ret[0] = e.target.parentNode.childNodes[0].wholeText.match(/[a-z]+/g)[0];
+			} else {
+				ret[0] = $('.liChoosen')[0].innerHTML;
+			}
+
 			ret[1] = e.target.getAttribute('ids')
 			this.props.tpId(ret);
+			this.removeSearch.bind(this)();
 		}
 	}
 
@@ -84,11 +139,13 @@ class SearchMusic extends Component {
 
 	render() {
 		let retTag = '';
+		let pTag = '';
+		let subData = null;
 		if (typeof this.state.searchValue === 'object' && this.state.searchValue.result.order) {
 			for (let i = 0; i < this.state.searchValue.result.order.length; i++) {
 				let newSpan = `<span>${this.state.searchValue.result.order[i]} ➥ `;
-				let subData = this.state.searchValue.result[this.state.searchValue.result.order[i]];
-				let pTag = '';
+				subData = this.state.searchValue.result[this.state.searchValue.result.order[i]];
+				pTag = '';
 				switch (this.state.searchValue.result.order[i]) {
 					case 'artists':
 						pTag = '';
@@ -126,12 +183,33 @@ class SearchMusic extends Component {
 		} else {
 			retTag = '';
 		}
+		let retTag2 = '';
+		let parType = !this.state.soloDetail ? null : this.state.soloDetail.parType;
+		if (typeof this.state.soloDetail === 'object' && this.state.soloDetail.result[parType].length > 0) {
+			pTag = '';
+			subData = this.state.soloDetail.result[parType];
+			for (let i = 0; i < subData.length; i++) {
+				pTag += `<p ids=${subData[i].id}> ${subData[i].name} --- ${subData[i]['artist']?subData[i]['artist'].name:subData[i]['artists'][0].name} </p>`;
+			}
+			retTag2 = pTag;
+		} else {
+			retTag2 = '';
+		}
 		return (
 			<div>
 			<div className='searchDiv' onClick={this.clickSearch} >
-				<input type="text" id='search' onChange={this.changeInput} autoComplete='off'/>
+				<input type="text" id='search' onChange={this.changeInput} autoComplete='off' onKeyDown={this.enterDown} />
 			</div>
 			<div className='searchSuggest' dangerouslySetInnerHTML={{__html:retTag}} onClick={this.clickSearchedValue}>
+			</div>
+			<div className='searchDetail'>
+					<div className='detailTab' onClick={this.clickTab}>
+						<ul><li className='liChoosen'>songs</li><li>albums</li><li>playlists</li><li>mvs</li><li>artists</li><li>users</li></ul>
+					</div>
+					<div className='detailSolo' dangerouslySetInnerHTML={{__html:retTag2}} onClick={this.clickSearchedValue}> 
+
+
+					</div>
 
 			</div>
 			</div>
