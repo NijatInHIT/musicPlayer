@@ -39,17 +39,19 @@ class PlayerList extends Component {
 		}
 	}
 
-	getList() {
+	getList(id) {
 		promise = new Promise((resolve, reject) => {
 			$.ajax({
 				type: 'get',
 				url: 'http://127.0.0.1:3001',
 				data: {
-					songSheet: 89187756
+					songSheet: id
 				},
 				success: function(data) {
 					rockList = JSON.parse(data);
-					for (var i = 0; i < rockList.result.tracks.length; i++) {
+					defaultList = [];
+					musicList = [];
+					for (var i = 0; i < (rockList.result.tracks.length < 100 ? rockList.result.tracks.length : 100); i++) {
 						defaultList.push(rockList.result.tracks[i].id);
 						musicList.push({
 							id: rockList.result.tracks[i].id,
@@ -89,7 +91,7 @@ class PlayerList extends Component {
 
 	render() {
 		if (!this.state.listReady) {
-			this.getList();
+			this.getList('376639423');
 			return (<div className='pList' onMouseLeave={this.leaveList}>
 					<h3> not ready!</h3>
 				</div>);

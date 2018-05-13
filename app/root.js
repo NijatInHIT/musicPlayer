@@ -18,8 +18,16 @@ class Root extends Component {
 	}
 
 	changeMusicFromSearch(id) {
-		this.refs.playMusic.playMp3(id);
-
+		switch (id[0]) {
+			case 'songs':
+				this.refs.playMusic.playMp3(id[1]);
+				break;
+			case 'playlists':
+				this.refs.playMusic.refs.playList.getList(id[1]);
+				break;
+			default:
+				console.log(id[0]);
+		}
 	}
 
 

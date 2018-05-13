@@ -166,7 +166,7 @@ class Player extends Component {
 						</div>
 					</div>
 					<div style={{overflowX:'hidden'}}>
-						<PlayerList nowPlaying={this.nowPlayingChanged} changeSong={this.nextSong}/>
+						<PlayerList ref='playList' nowPlaying={this.nowPlayingChanged} changeSong={this.nextSong}/>
 					</div>
 					<div>
 						<Progress pgsChanged={this.progressChanged} progress={this.state.progress}/>

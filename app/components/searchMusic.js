@@ -41,9 +41,12 @@ class SearchMusic extends Component {
 	}
 
 	clickSearchedValue(e) {
-		if (e.target.nodeName === 'P' && e.target.parentNode.childNodes[0].wholeText.indexOf('songs') !== -1) {
+		if (e.target.nodeName === 'P') {
 			console.log(e.target);
-			this.props.tpId(e.target.getAttribute('ids'));
+			let ret = [];
+			ret[0] = e.target.parentNode.childNodes[0].wholeText.match(/[a-z]+/g)[0];
+			ret[1] = e.target.getAttribute('ids')
+			this.props.tpId(ret);
 		}
 	}
 
@@ -97,14 +100,14 @@ class SearchMusic extends Component {
 					case 'albums':
 						pTag = '';
 						for (let j = 0; j < subData.length; j++) {
-							pTag += `<p>${subData[j].name}---${subData[j].artist.name}</p>`;
+							pTag += `<p ids=${subData[j].id} >${subData[j].name}---${subData[j].artist.name}</p>`;
 						}
 						newSpan += pTag + '</span>';
 						break;
 					case 'playlists':
 						pTag = '';
 						for (let j = 0; j < subData.length; j++) {
-							pTag += `<p>${subData[j].name}</p>`;
+							pTag += `<p ids=${subData[j].id} >${subData[j].name}</p>`;
 						}
 						newSpan += pTag + '</span>';
 						break;
