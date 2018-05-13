@@ -32,6 +32,8 @@ class SearchMusic extends Component {
 			e1.target.nodeName = 'OAW';
 			e1.target.innerHTML = 'songs';
 			this.removeSearch(e1);
+			$('.detailTab li').removeClass('liChoosen');
+			$($('.detailTab li')[0]).addClass('liChoosen');
 			this.clickTab(e1);
 		}
 
@@ -218,6 +220,11 @@ class SearchMusic extends Component {
 					pTag += `<p ids=${subData[i].id}> ${subData[i].name} --- ${subData[i]['artist']?subData[i]['artist'].name:subData[i]['artists'][0].name} </p>`;
 				}
 				retTag2 += pTag;
+			} else {
+				for (let i = 0; i < subData.length; i++) {
+					pTag += `<p ids=${subData[i].id}> ${subData[i].name} -----~ </p>`;
+				}
+				retTag2 += pTag;
 			}
 		} else {
 			retTag2 = retTag2;
@@ -231,7 +238,7 @@ class SearchMusic extends Component {
 			</div>
 			<div className='searchDetail' onMouseLeave={this.mouseOutDetail} onMouseMove={this.mouseMoveDetail}>
 					<div className='detailTab' onClick={this.clickTab}>
-						<ul><li className='liChoosen'>songs</li><li>albums</li><li>playlists</li><li>mvs</li><li>artists</li><li>users</li></ul>
+						<ul><li>songs</li><li>albums</li><li>playlists</li><li>mvs</li><li>artists</li><li>users</li></ul>
 					</div>
 					<div className='detailSolo' dangerouslySetInnerHTML={{__html:retTag2}} onClick={this.clickSearchedValue}> 
 					</div>
