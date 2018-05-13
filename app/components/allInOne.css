@@ -16,15 +16,14 @@ body{
 
 
 .cpt-header{
-	height: 20px;
-	background-color: #152d2e;
-	border: 1px solid #152d2a;
+	height: 45px;
+	background-color: transparent;
 }
 
 .header-title{
-	color: #b6e2d3;
+	color: #7ec8e3;
 	text-align: right;
-	padding: 0 18%;
+	padding: 0 10%;
 }
 .cpt-pgs{
 	height: 21px;
@@ -38,7 +37,7 @@ body{
 .pgs-time{
 	height: 21px;
 	width: 0%;
-	background: #152d2e;
+	background: #2F5C5A;
 	border-radius: 25px;
 	color: #999da0;
 	transition: width 0.1s linear;
@@ -194,7 +193,7 @@ hr{
 	float: left;
 	width: 35px;
 	height: 30px;
-	border:2px solid #b6e2d3;
+	border:2px solid #7ec8e3;
 	border-radius: 50%;
 	margin-left: 50px;
 	transition: all 0.2s linear;
@@ -202,7 +201,8 @@ hr{
 }
 
 #search{
-	color:#b6e2d3;
+	background: transparent;
+	color:#7ec8e3;
 	position: absolute;
 	text-align: center;
 	width: 100%;
@@ -228,14 +228,14 @@ hr{
     height: 100%;
     display: block;
     position: absolute;
-    background: #152d2e;
+    background: transparent;
     border-radius: 50%;
 }
 .searchOpen::before{
 	filter: none;
 	border-radius: 7px;
 	visibility: hidden;
-    border: 2px solid #b6e2d3;
+    border: 2px solid #7ec8e3;
     height: 20px;
     width: 0;
     top: -20px;
@@ -253,10 +253,10 @@ hr{
 	content: ' ';
     display: block;
     position: absolute;
-    border: 2px solid #b6e2d3;
+    border: 2px solid #7ec8e3;
     border-radius: 26%;
     height: 20px;
-    bottom: -14px;
+    bottom: -16px;
     left: 102%;
     transform:rotate(-45deg) translate(0px,0px) scale(1);
 }
@@ -265,7 +265,7 @@ hr{
 	transform:rotate(-45deg) translate(0px,-10px) scaleY(0);
 }
 .getCross::after{
-	transform:rotate(-45deg) translate(-4px,-28px) scaleY(0.9);
+	transform:rotate(-45deg) translate(-3px,-30px) scaleY(0.9);
 }
 .searchOpen{
 	width: 270px;
@@ -275,7 +275,6 @@ hr{
 
 .getCross{
 	display: block;
-	border: 1px solid #b6e2d3;
 }
 .clickCross{
 	z-index: 1;
@@ -365,7 +364,6 @@ hr{
 .detailTab li{
 	padding: 2px 0 4px 0;
 	font-size: 20px;
-	font-style: 30px;
 	text-align: center;
 	background: #eee;
 	width: 114px;
@@ -396,4 +394,17 @@ hr{
 }
 .detailSolo p:hover{
 	border:1px dotted #208CC2;
+}
+
+.blurImg{
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	visibility: hidden;
+	border-radius: 7%;
+	right: 45px;
+	background-size: 100% 100% !important;
+}
+.blurImg-show{
+	visibility: visible;
 }

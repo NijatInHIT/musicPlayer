@@ -35,7 +35,6 @@ class Root extends Component {
 		return (
 			<div>
 				<Header />
-				<hr/><br/>
 				<SearchMusic  tpId={this.changeMusicFromSearch}/>
 				<Player ref='playMusic'/>
 			</div>

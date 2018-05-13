@@ -13,6 +13,8 @@ class SearchMusic extends Component {
 		this.clickSearchedValue = this.clickSearchedValue.bind(this);
 		this.enterDown = this.enterDown.bind(this);
 		this.clickTab = this.clickTab.bind(this);
+		this.mouseOutDetail = this.mouseOutDetail.bind(this);
+		this.mouseMoveDetail = this.mouseMoveDetail.bind(this);
 		this.state = {
 			searchValue: undefined,
 			soloDetail: undefined
@@ -27,8 +29,12 @@ class SearchMusic extends Component {
 			let e1 = {};
 			e1.target = {};
 			e1.target.keyCode = 13;
+			e1.target.nodeName = 'OAW';
+			e1.target.innerHTML = 'songs';
 			this.removeSearch(e1);
+			this.clickTab(e1);
 		}
+
 	}
 
 	clickTab(e) {
@@ -74,19 +80,38 @@ class SearchMusic extends Component {
 	}
 
 	removeSearch(e) {
+		$('#search')[0].value = '';
+		$('#search').blur();
 		$('.searchDiv').removeClass('getCross');
 		setTimeout(() => {
 			$('.searchDiv').removeClass('searchOpen');
 			$('.searchSuggest').removeClass('searchSuggestShow');
-			!(e && e.target.keyCode == 13) ? $('.searchDetail-show').removeClass('searchDetail-show'): null;
 			$('.clickCross').remove();
 			this.setState({
 				searchValue: undefined,
-				soloDetail: undefined
 			});
 		}, 200);
 	}
 
+	mouseOutDetail(e) {
+		$('.searchDetail-show').removeClass('searchDetail-show');
+		this.setState({
+			soloDetail: undefined
+		})
+	}
+
+	mouseMoveDetail(e) {
+		if (e.target.nodeName == 'P') {
+			$('.blurImg').addClass('blurImg-show');
+			$('.blurImg').css({
+				top: e.pageY - 100,
+				background: `url(${this.state.soloDetail.result [$(".liChoosen")[0].innerHTML] [$(".detailSolo p").index(e.target)].album.blurPicUrl}`
+
+			});
+		} else {
+			$('.blurImg').removeClass('blurImg-show');
+		}
+	}
 
 	clickSearchedValue(e) {
 		if (e.target.nodeName === 'P') {
@@ -183,17 +208,19 @@ class SearchMusic extends Component {
 		} else {
 			retTag = '';
 		}
-		let retTag2 = '';
+		let retTag2 = '<div class="blurImg"></div>';
 		let parType = !this.state.soloDetail ? null : this.state.soloDetail.parType;
 		if (typeof this.state.soloDetail === 'object' && this.state.soloDetail.result[parType].length > 0) {
 			pTag = '';
 			subData = this.state.soloDetail.result[parType];
-			for (let i = 0; i < subData.length; i++) {
-				pTag += `<p ids=${subData[i].id}> ${subData[i].name} --- ${subData[i]['artist']?subData[i]['artist'].name:subData[i]['artists'][0].name} </p>`;
+			if (this.state.soloDetail.parType.search(/artists|users|playlists/g) === -1) {
+				for (let i = 0; i < subData.length; i++) {
+					pTag += `<p ids=${subData[i].id}> ${subData[i].name} --- ${subData[i]['artist']?subData[i]['artist'].name:subData[i]['artists'][0].name} </p>`;
+				}
+				retTag2 += pTag;
 			}
-			retTag2 = pTag;
 		} else {
-			retTag2 = '';
+			retTag2 = retTag2;
 		}
 		return (
 			<div>
@@ -202,13 +229,11 @@ class SearchMusic extends Component {
 			</div>
 			<div className='searchSuggest' dangerouslySetInnerHTML={{__html:retTag}} onClick={this.clickSearchedValue}>
 			</div>
-			<div className='searchDetail'>
+			<div className='searchDetail' onMouseLeave={this.mouseOutDetail} onMouseMove={this.mouseMoveDetail}>
 					<div className='detailTab' onClick={this.clickTab}>
 						<ul><li className='liChoosen'>songs</li><li>albums</li><li>playlists</li><li>mvs</li><li>artists</li><li>users</li></ul>
 					</div>
 					<div className='detailSolo' dangerouslySetInnerHTML={{__html:retTag2}} onClick={this.clickSearchedValue}> 
-
-
 					</div>
 
 			</div>

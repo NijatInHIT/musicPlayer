@@ -27,7 +27,7 @@ class PlayerList extends Component {
 		clearTimeout(timeout);
 		timeout = setTimeout(() => {
 			$('.pList').removeClass('slideShow');
-		}, 1000);
+		}, 200);
 		$('.albumPreset').css({
 			display: 'none'
 		});
