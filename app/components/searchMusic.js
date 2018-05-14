@@ -43,29 +43,36 @@ class SearchMusic extends Component {
 		if (e.target.nodeName == 'LI') {
 			$('.detailTab li').removeClass('liChoosen');
 			$(e.target).addClass('liChoosen');
-		}
-		new Promise((resolve, reject) => {
-			$.ajax({
-				type: 'GET',
-				dataType: 'text',
-				url: 'http://127.0.0.1:3001',
-				data: {
-					typeDetail: e.target.innerHTML,
-					searchValue: searchValue
-				},
-				success: function(data) {
-					data = JSON.parse(data);
-					resolve(data);
+			new Promise((resolve, reject) => {
+				$.ajax({
+					type: 'GET',
+					dataType: 'text',
+					url: 'http://127.0.0.1:3001',
+					data: {
+						typeDetail: e.target.innerHTML,
+						searchValue: searchValue
+					},
+					success: function(data) {
+						data = JSON.parse(data);
+						resolve(data);
 
+					}
+				});
+			}).then(data => {
+				if ($('.searchDetail').hasClass('searchDetail-show')) {
+					this.setState({
+						soloDetail: data
+					});
+				} else {
+					this.setState({
+						soloDetail: undefined
+					});
 				}
 			});
-		}).then(data => {
-			this.setState({
-				soloDetail: data
-			});
-		});
 
+		}
 	}
+
 
 	clickSearch(e) {
 		if ($(e.target).hasClass('searchDiv') && !$(e.target).hasClass('getCross')) {
@@ -96,10 +103,14 @@ class SearchMusic extends Component {
 	}
 
 	mouseOutDetail(e) {
+		if (e.target.nodeName == 'LI') {
+			console.log('CAN NOT LEAVE!')
+			return;
+		}
 		$('.searchDetail-show').removeClass('searchDetail-show');
 		this.setState({
 			soloDetail: undefined
-		})
+		});
 	}
 
 	mouseMoveDetail(e) {
@@ -213,7 +224,7 @@ class SearchMusic extends Component {
 		let retTag2 = '<div class="blurImg"></div>';
 		let parType = !this.state.soloDetail ? undefined : this.state.soloDetail.parType;
 		parType = (parType && parType === 'users' ? 'userprofiles' : parType);
-		if (typeof this.state.soloDetail === 'object' && this.state.soloDetail.result[parType].length > 0) {
+		if (typeof this.state.soloDetail === 'object' && (this.state.soloDetail.result[parType] && this.state.soloDetail.result[parType].length > 0)) {
 			pTag = '';
 			subData = this.state.soloDetail.result[parType];
 			if (this.state.soloDetail.parType.search(/artists|users|playlists/g) === -1) {
