@@ -103,6 +103,7 @@ class Player extends Component {
 			volume: 0.5,
 			loop: true
 		});
+		nowId = 0;
 		this.playMp3(nowPlaying);
 		$('.pCover').addClass('coverChange');
 		setTimeout(() => {

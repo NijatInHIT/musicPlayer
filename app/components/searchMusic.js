@@ -103,7 +103,7 @@ class SearchMusic extends Component {
 	}
 
 	mouseMoveDetail(e) {
-		if (e.target.nodeName == 'P') {
+		if (e.target.nodeName == 'P' && $('.liChoosen')[0].innerHTML == 'songs') {
 			$('.blurImg').addClass('blurImg-show');
 			$('.blurImg').css({
 				top: e.pageY - 100,
@@ -211,7 +211,8 @@ class SearchMusic extends Component {
 			retTag = '';
 		}
 		let retTag2 = '<div class="blurImg"></div>';
-		let parType = !this.state.soloDetail ? null : this.state.soloDetail.parType;
+		let parType = !this.state.soloDetail ? undefined : this.state.soloDetail.parType;
+		parType = (parType && parType === 'users' ? 'userprofiles' : parType);
 		if (typeof this.state.soloDetail === 'object' && this.state.soloDetail.result[parType].length > 0) {
 			pTag = '';
 			subData = this.state.soloDetail.result[parType];
@@ -220,9 +221,15 @@ class SearchMusic extends Component {
 					pTag += `<p ids=${subData[i].id}> ${subData[i].name} --- ${subData[i]['artist']?subData[i]['artist'].name:subData[i]['artists'][0].name} </p>`;
 				}
 				retTag2 += pTag;
+			} else if (this.state.soloDetail.parType === 'users') {
+				for (let i = 0; i < subData.length; i++) {
+					pTag += `<p ids=${subData[i].userId}> ${subData[i].nickname}</p>`;
+				}
+				retTag2 += pTag;
+
 			} else {
 				for (let i = 0; i < subData.length; i++) {
-					pTag += `<p ids=${subData[i].id}> ${subData[i].name} -----~ </p>`;
+					pTag += `<p ids=${subData[i].id}> ${subData[i].name}</p>`;
 				}
 				retTag2 += pTag;
 			}
