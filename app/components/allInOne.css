@@ -22,7 +22,7 @@ body{
 }
 
 .header-title{
-	color: #7ec8e3;
+	color: #015;
 	text-align: left;
 	padding-left:50%;
 }
@@ -194,7 +194,7 @@ hr{
 	float: left;
 	width: 35px;
 	height: 30px;
-	border:2px solid #7ec8e3;
+	border:2px solid #015;
 	border-radius: 50%;
 	margin-left: 50px;
 	transition: all 0.2s linear;
@@ -203,7 +203,7 @@ hr{
 
 #search{
 	background: transparent;
-	color:#7ec8e3;
+	color:#015;
 	position: absolute;
 	text-align: center;
 	width: 100%;
@@ -236,7 +236,7 @@ hr{
 	filter: none;
 	border-radius: 7px;
 	visibility: hidden;
-    border: 2px solid #7ec8e3;
+    border: 2px solid #015;
     height: 20px;
     width: 0;
     top: -20px;
@@ -254,7 +254,7 @@ hr{
 	content: ' ';
     display: block;
     position: absolute;
-    border: 2px solid #7ec8e3;
+    border: 2px solid #015;
     border-radius: 26%;
     height: 20px;
     bottom: -16px;
